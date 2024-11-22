@@ -1,0 +1,208 @@
+Microsoft Windows [Version 10.0.19045.2486]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\Sreenath GN>echo %PATH%
+C:\Program Files\Eclipse Foundation\jdk-16.0.2.7-hotspot\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\dotnet\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\140\Tools\Binn\;C:\Program Files\Microsoft SQL Server\140\Tools\Binn\;C:\Program Files\Microsoft SQL Server\140\DTS\Binn\;C:\Program Files (x86)\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\140\DTS\Binn\;C:\Program Files (x86)\Microsoft SQL Server\140\Tools\Binn\ManagementStudio\;C:\Program Files\Keysight\IO Libraries Suite\bin;C:\Program Files\IVI Foundation\VISA\Win64\ktvisa;C:\Program Files\IVI Foundation\VISA\Win64\bin;C:\Program Files (x86)\Keysight\IO Libraries Suite\bin;C:\Program Files (x86)\IVI Foundation\VISA\WinNT\ktvisa;C:\Program Files (x86)\IVI Foundation\VISA\WinNT\bin;C:\Program Files (x86)\IVI Foundation\IVI\bin;C:\Program Files\IVI Foundation\IVI\bin;C:\Program Files (x86)\IVI Foundation\VISA\WinNT\Bin\;C:\Program Files\IVI Foundation\VISA\Win64\Bin\;C:\Program Files (x86)\IVI Foundation\VISA\winnt\agvisa;C:\Program Files\CMake\bin;C:\Qt\Qt5.12.12\Tools\mingw730_64\bin;D:\softwares\opencv\b2\bin;D:\softwares\opencv\vs\install\x64\vc16\bin;C:\Program Files\MySQL\MySQL Server 8.1\bin;C:\Users\Sreenath GN\AppData\Local\Microsoft\WindowsApps;C:\Qt\Qt5.12.12\Tools\mingw730_64\bin;D:\ocv47\opencv\mingw64b\install\x64\mingw\bin;
+
+C:\Users\Sreenath GN>mysql
+ERROR 1045 (28000): Access denied for user 'ODBC'@'localhost' (using password: NO)
+
+C:\Users\Sreenath GN>mysql -u root
+ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: NO)
+
+C:\Users\Sreenath GN>mysql -u root -p
+Enter password: **************
+ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+
+C:\Users\Sreenath GN>mysql -u root -p
+Enter password: *************
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 15
+Server version: 8.1.0 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2023, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases
+    -> ;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+4 rows in set (0.01 sec)
+
+mysql> create database Face_reco;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use Face_reco;
+Database changed
+mysql> create table plant(Pname varchar(20), Description varchar(50), Remarks varchar(50));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table agency(Aname varchar(20), Descrip varchar(50), Remark varchar(50));
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> create table User(Uname varchar(20) as primary key, Password varchar(20), Pname varchar(20)  as foreign key references(plant, pname), previlege varchar(50));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'primary key, Password varchar(20), Pname varchar(20)  as foreign key references(' at line 1
+mysql> create table User(Uname varchar(20) , Password varchar(20), Pname varchar(20)  as foreign key references(plant, pname), previlege varchar(50));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'foreign key references(plant, pname), previlege varchar(50))' at line 1
+mysql> create table User(Uname varchar(20) , Password varchar(20), Pname varchar(20) as foreign key references(plant, pname), previlege varchar(50));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'foreign key references(plant, pname), previlege varchar(50))' at line 1
+mysql> create table User(Uname varchar(20) , Password varchar(20), Pname varchar(20) , previlege varchar(50),primary key(uname) foreign key(pname) references plant(pname);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'foreign key(pname) references plant(pname)' at line 1
+mysql> create table User(Uname varchar(20) , Password varchar(20), Pname varchar(20) , previlege varchar(50),primary key(uname), foreign key(pname) references plant(pname);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> create table user(Uname varchar(20), password varchar(20), Pname varchar(20), previlege varchar(50
+    -> ), primary key(uname), Foreign key (pname) references plant(pname));
+ERROR 1822 (HY000): Failed to add the foreign key constraint. Missing index for constraint 'user_ibfk_1' in the referenced table 'plant'
+mysql> drop database face_reco;
+Query OK, 2 rows affected (0.05 sec)
+
+mysql> create database Face_reco;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use Face_reco;
+Database changed
+mysql> create table plant(pname varchar(20), description varchar(50), remarks varchar(50), primary key(pname));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table Agency(Aname varchar(20), description varchar(50), remarks varchar(50), primary key(Aname));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table User(Uname varchar(20), Password varchar(20), Pname varchar(20), Previlege varchar(30), primary key(uname), foreign key(pname)references plant(pname));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table Shift( shiftname varchar(20), starttime time, endtime time, Add/sub varchar(10), Mintime time, minfull time, minhalf time, primary key(Shiftname));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Add/sub varchar(10), Mintime time, minfull time, minhalf time, primary key(Shift' at line 1
+mysql> create table Shift( shiftname varchar(20), starttime time, endtime time, Addsub varchar(10), Mintime time, minfull time, minhalf time, primary key(Shiftname));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table skill(Skillname varchar(20), Decription varchar(50), Remarks varchar(50));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table staff(staffno integer, Name varchar(20), Gender varchar(6), Aname varchar(20), Pname varchar(20), shiftname varchar(20), Timestamp timestamp(), templates blob, status varchar(20), LastModified timestamp(), primary key(staffno),foreign key(Aname, Pname) references (agency(aname), plant(pname)));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '), templates blob, status varchar(20), LastModified timestamp(), primary key(sta' at line 1
+mysql> create table staff(staffno integer, Name varchar(20), Gender varchar(6), Aname varchar(20), Pname varchar(20), shiftname varchar(20), Timestamp timestamp, templates blob, status varchar(20), LastModified timestamp, primary key(staffno),foreign key(Aname, Pname) references (agency(aname), plant(pname)));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(agency(aname), plant(pname)))' at line 1
+mysql> create table staff(staffno integer, Name varchar(20), Gender varchar(6), Aname varchar(20), Pname varchar(20), shiftname varchar(20), Timestamp timestamp, templates blob, status varchar(20), LastModified timestamp, primary key(staffno),foreign key(Aname, Pname) references agency(aname), plant(pname));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(pname))' at line 1
+mysql> create table staff(staffno integer, Name varchar(20), Gender varchar(6), Aname varchar(20), Pname varchar(20), shiftname varchar(20), Timestamp timestamp, templates blob, status varchar(20), LastModified timestamp, primary key(staffno),foreign key(Aname, Pname) references agency(aname), plant(pname));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(pname))' at line 1
+mysql> create table staff(staffno integer, Name varchar(20), Gender varchar(6), Aname varchar(20), Pname varchar(20), shiftname varchar(20), Timestamp timestamp, templates blob, status varchar(20), LastModified timestamp, primary key(staffno),foreign key(Aname) references agency(aname),foreignkey(pname) references plant(pname));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(pname) references plant(pname))' at line 1
+mysql> create table staff(staffno integer, Name varchar(20), Gender varchar(6), Aname varchar(20), Pname varchar(20), shiftname varchar(20), Timestamp timestamp, templates blob, status varchar(20), LastModified timestamp, primary key(staffno),foreign key(Aname) references agency(aname),foreign key(pname) references plant(pname));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table Attendence(Staffno integer, shift_IN_OUT varchar(20),Timestamp timestamp, foreign key(staffno) references Staff(staffno));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> show tables;
++---------------------+
+| Tables_in_face_reco |
++---------------------+
+| agency              |
+| attendence          |
+| plant               |
+| shift               |
+| skill               |
+| staff               |
+| user                |
++---------------------+
+7 rows in set (0.00 sec)
+
+mysql> ^C
+mysql> desc agency
+    -> ;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| Aname       | varchar(20) | NO   | PRI | NULL    |       |
+| description | varchar(50) | YES  |     | NULL    |       |
+| remarks     | varchar(50) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> desc attendence;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| Staffno      | int         | YES  | MUL | NULL    |       |
+| shift_IN_OUT | varchar(20) | YES  |     | NULL    |       |
+| Timestamp    | timestamp   | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> desc plant;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| pname       | varchar(20) | NO   | PRI | NULL    |       |
+| description | varchar(50) | YES  |     | NULL    |       |
+| remarks     | varchar(50) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> desc staff;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| staffno      | int         | NO   | PRI | NULL    |       |
+| Name         | varchar(20) | YES  |     | NULL    |       |
+| Gender       | varchar(6)  | YES  |     | NULL    |       |
+| Aname        | varchar(20) | YES  | MUL | NULL    |       |
+| Pname        | varchar(20) | YES  | MUL | NULL    |       |
+| shiftname    | varchar(20) | YES  |     | NULL    |       |
+| Timestamp    | timestamp   | YES  |     | NULL    |       |
+| templates    | blob        | YES  |     | NULL    |       |
+| status       | varchar(20) | YES  |     | NULL    |       |
+| LastModified | timestamp   | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+10 rows in set (0.00 sec)
+
+mysql> desc user;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| Uname     | varchar(20) | NO   | PRI | NULL    |       |
+| Password  | varchar(20) | YES  |     | NULL    |       |
+| Pname     | varchar(20) | YES  | MUL | NULL    |       |
+| Previlege | varchar(30) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> desc skill;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| Skillname  | varchar(20) | YES  |     | NULL    |       |
+| Decription | varchar(50) | YES  |     | NULL    |       |
+| Remarks    | varchar(50) | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> desc dhift;
+ERROR 1146 (42S02): Table 'face_reco.dhift' doesn't exist
+mysql> desc shift;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| shiftname | varchar(20) | NO   | PRI | NULL    |       |
+| starttime | time        | YES  |     | NULL    |       |
+| endtime   | time        | YES  |     | NULL    |       |
+| Addsub    | varchar(10) | YES  |     | NULL    |       |
+| Mintime   | time        | YES  |     | NULL    |       |
+| minfull   | time        | YES  |     | NULL    |       |
+| minhalf   | time        | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql>

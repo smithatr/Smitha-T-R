@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Enrollment</title>
+    <link rel="stylesheet" href="staffmanagement.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Staff Enrollment</h1>
+        <form id="enrollmentForm">
+            <label for="employeeId">Employee ID:</label>
+            <input type="text" id="employeeId" required><br><br>
+
+            <label for="employeeName">Employee Name:</label>
+            <input type="text" id="employeeName" required><br><br>
+
+            <label for="gender">Gender:</label>
+            <select id="gender" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select><br><br>
+
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" required><br><br>
+
+            <label for="plant">Plant Name:</label>
+            <select id="plant" required>
+                <!-- Add options dynamically using JavaScript if needed -->
+            </select><br><br>
+
+            <label for="agency">Agency Name:</label>
+            <select id="agency" required>
+                <!-- Add options dynamically using JavaScript if needed -->
+            </select><br><br>
+
+            <label for="shift">Shift Name:</label>
+            <select id="shift" required>
+                <!-- Add options dynamically using JavaScript if needed -->
+            </select><br><br>
+
+            <label for="image1">Image 1:</label>
+            <input type="file" id="image1" accept="image/*" required><br><br>
+
+            <label for="image2">Image 2:</label>
+            <input type="file" id="image2" accept="image/*" required><br><br>
+
+            <label for="image3">Image 3:</label>
+            <input type="file" id="image3" accept="image/*" required><br><br>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
